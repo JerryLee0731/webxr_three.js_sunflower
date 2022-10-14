@@ -80,14 +80,22 @@ async function activateXR() {
     let reticle;
     loader.load("https://immersive-web.github.io/webxr-samples/media/gltf/reticle/reticle.gltf", function(gltf) {
         reticle = gltf.scene;
-        reticle.visible = true; //暫定為true，以後需改成false
+        reticle.visible = false; 
         scene.add(reticle);
     })
 
-    let flower;
-    loader.load("https://immersive-web.github.io/webxr-samples/media/gltf/sunflower/sunflower.gltf", function(gltf) {
-        flower = gltf.scene;
-    });
+    //load機器手臂
+    const loader2 = new THREE.OBJLoader();
+	const loader3 = new THREE.MTLLoader();
+    let tm500;
+	loader3.load("./assets/TM5_900.mtl", function(materials){
+		materials.preload();
+		loader2.setMaterials(materials);
+		loader2.load("./assets/TM5_900.obj", function(object){
+			tm500=object;
+		})
+        scene.add(tm500);
+	})
 
     // Create a render loop that allows us to draw on the AR view.
     const onXRFrame = (time, frame) => {
