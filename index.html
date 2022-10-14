@@ -30,9 +30,9 @@ async function activateXR() {
     // To be continued in upcoming steps.
     const scene = new THREE.Scene();
 
-    //增加光線並加入場景
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.3);
-    directionalLight.position.set(10, 15, 10);
+    //增加光線並加入場景，改成hemospherelight
+    const directionalLight = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
+    directionalLight.position.set( 0.5, 1, 0.25 );
     scene.add(directionalLight);
 
     // Set up the WebGLRenderer, which handles rendering to the session's base layer.
@@ -42,7 +42,7 @@ async function activateXR() {
         canvas: canvas,
         context: gl
     });
-    renderer.autoClear = false;
+    renderer.autoClear = true; //改成true試看看 原false
 
     // The API directly updates the camera matrices.
     // Disable matrix auto updates so three.js doesn't attempt
