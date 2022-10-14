@@ -80,7 +80,7 @@ async function activateXR() {
     let reticle;
     loader.load("https://immersive-web.github.io/webxr-samples/media/gltf/reticle/reticle.gltf", function(gltf) {
         reticle = gltf.scene;
-        reticle.visible = false; 
+        reticle.visible = true;  //須改回false
         scene.add(reticle);
     })
 
@@ -103,8 +103,8 @@ async function activateXR() {
         session.requestAnimationFrame(onXRFrame);
 
         // Bind the graphics framebuffer to the baseLayer's framebuffer
-        //註解掉以下這行
-        //gl.bindFramebuffer(gl.FRAMEBUFFER, session.renderState.baseLayer.framebuffer)
+        
+        gl.bindFramebuffer(gl.FRAMEBUFFER, session.renderState.baseLayer.framebuffer)
 
         // Retrieve the pose of the device.
         // XRFrame.getViewerPose can return null while the session attempts to establish tracking.
