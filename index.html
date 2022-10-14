@@ -93,8 +93,8 @@ async function activateXR() {
 		loader2.setMaterials(materials);
 		loader2.load("./assets/TM5_900.obj", function(object){
 			tm500=object;
+            scene.add(tm500);
 		})
-        scene.add(tm500);
 	})
 
     // Create a render loop that allows us to draw on the AR view.
@@ -103,7 +103,8 @@ async function activateXR() {
         session.requestAnimationFrame(onXRFrame);
 
         // Bind the graphics framebuffer to the baseLayer's framebuffer
-        gl.bindFramebuffer(gl.FRAMEBUFFER, session.renderState.baseLayer.framebuffer)
+        //註解掉以下這行
+        //gl.bindFramebuffer(gl.FRAMEBUFFER, session.renderState.baseLayer.framebuffer)
 
         // Retrieve the pose of the device.
         // XRFrame.getViewerPose can return null while the session attempts to establish tracking.
