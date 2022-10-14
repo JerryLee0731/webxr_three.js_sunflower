@@ -76,11 +76,16 @@ async function activateXR() {
     // near the viewer's position at the time the session was created.
     const referenceSpace = await session.requestReferenceSpace('local');
 
+    // Create another XRReferenceSpace that has the viewer as the origin.
+    const viewerSpace = await session.requestReferenceSpace('viewer');
+    // Perform hit testing using the viewer as origin.
+    const hitTestSource = await session.requestHitTestSource({ space: viewerSpace });
+
     const loader = new THREE.GLTFLoader();
     let reticle;
     loader.load("https://immersive-web.github.io/webxr-samples/media/gltf/reticle/reticle.gltf", function(gltf) {
         reticle = gltf.scene;
-        reticle.visible = true;  //須改回false
+        reticle.visible = false;
         scene.add(reticle);
     })
 
@@ -93,9 +98,15 @@ async function activateXR() {
 		loader2.setMaterials(materials);
 		loader2.load("./assets/TM5_900.obj", function(object){
 			tm500=object;
-            scene.add(tm500);
 		})
 	})
+
+    session.addEventListener("select", (event) => {
+        if (tm500) {
+            tm500.position.copy(reticle.position);
+            scene.add(tm500);
+        }
+    });
 
     // Create a render loop that allows us to draw on the AR view.
     const onXRFrame = (time, frame) => {
@@ -120,6 +131,14 @@ async function activateXR() {
             camera.matrix.fromArray(view.transform.matrix)
             camera.projectionMatrix.fromArray(view.projectionMatrix);
             camera.updateMatrixWorld(true);
+
+            const hitTestResults = frame.getHitTestResults(hitTestSource);
+            if (hitTestResults.length > 0 && reticle) {
+                const hitPose = hitTestResults[0].getPose(referenceSpace);
+                reticle.visible = true;
+                reticle.position.set(hitPose.transform.position.x, hitPose.transform.position.y, hitPose.transform.position.z)
+                reticle.updateMatrixWorld(true);
+            }
 
             // Render the scene with THREE.WebGLRenderer.
             renderer.render(scene, camera)
