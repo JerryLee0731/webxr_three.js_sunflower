@@ -101,7 +101,8 @@ async function activateXR() {
 
         // Bind the graphics framebuffer to the baseLayer's framebuffer
         
-        gl.bindFramebuffer(gl.FRAMEBUFFER,renderer.canvas);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, session.renderState.baseLayer.framebuffer);
+        gl.colorMask(true,true,true,false);
 
         // Retrieve the pose of the device.
         // XRFrame.getViewerPose can return null while the session attempts to establish tracking.
