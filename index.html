@@ -54,9 +54,9 @@ async function activateXR() {
     //增加hit-test功能
     const session = await navigator.xr.requestSession("immersive-ar",{requiredFeatures: ['hit-test']});
 
-    // session.updateRenderState({
-    //     baseLayer: new XRWebGLLayer(session,gl)
-    // });暫時註解是看看
+    session.updateRenderState({
+        baseLayer: new XRWebGLLayer(session,gl)
+    });
 
     // A 'local' reference space has a native origin that is located
     // near the viewer's position at the time the session was created.
@@ -101,7 +101,7 @@ async function activateXR() {
 
         // Bind the graphics framebuffer to the baseLayer's framebuffer
         
-        //gl.bindFramebuffer(gl.FRAMEBUFFER, session.renderState.baseLayer.framebuffer)
+        gl.deleteFramebuffer(session.renderState.baseLayer.framebuffer);
 
         // Retrieve the pose of the device.
         // XRFrame.getViewerPose can return null while the session attempts to establish tracking.
