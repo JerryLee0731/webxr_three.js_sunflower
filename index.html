@@ -54,7 +54,7 @@ async function activateXR() {
     //增加hit-test功能
     const session = await navigator.xr.requestSession("immersive-ar",{requiredFeatures: ['hit-test']});
     session.updateRenderState({
-        baseLayer: new XRWebGLLayer(session)
+        baseLayer: new XRWebGLLayer(session,gl)
     });
 
     // A 'local' reference space has a native origin that is located
@@ -109,7 +109,7 @@ async function activateXR() {
             // In mobile AR, we only have one view.
             const view = pose.views[0];
 
-            const viewport = session.renderState.baseLayer.getViewport(view);
+            //const viewport = session.renderState.baseLayer.getViewport(view);
             renderer.setSize(window.innerWidth, window.innerHeight)//將viewport.width,viewport.height改成window
 
             // Use the view's transform matrix and projection matrix to configure the THREE.camera.
