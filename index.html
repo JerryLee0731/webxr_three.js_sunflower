@@ -25,7 +25,7 @@ async function activateXR() {
     // Add a canvas element and initialize a WebGL context that is compatible with WebXR.
     const canvas = document.createElement("canvas");
     document.body.appendChild(canvas);
-    const gl = canvas.getContext("webgl", {xrCompatible: true});//之後要改回true
+    const gl = canvas.getContext("webgl", {xrCompatible: false});//之後要改回true
 
     // To be continued in upcoming steps.
     const scene = new THREE.Scene();
@@ -42,24 +42,21 @@ async function activateXR() {
         canvas: canvas,
         context: gl
     });
-    renderer.autoClear = true; //改成true試看看 原false
+    renderer.autoClear = false; 
 
     // The API directly updates the camera matrices.
     // Disable matrix auto updates so three.js doesn't attempt
     // to handle the matrices independently.
-    const camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight, 100, 500);//原本無輸入參數
+    const camera = new THREE.PerspectiveCamera();
     camera.matrixAutoUpdate = false;
 
     // Initialize a WebXR session using "immersive-ar".
     //增加hit-test功能
     const session = await navigator.xr.requestSession("immersive-ar",{requiredFeatures: ['hit-test']});
-    const glbinding = new XRWebGLBinding(session, gl);
-    const prolayer = glbinding.createProjectionLayer({opacity:0});
 
-    session.updateRenderState({
-        //baseLayer: new XRWebGLLayer(session,gl)
-        layers: prolayer
-    });
+    // session.updateRenderState({
+    //     baseLayer: new XRWebGLLayer(session,gl)
+    // });暫時註解是看看
 
     // A 'local' reference space has a native origin that is located
     // near the viewer's position at the time the session was created.
