@@ -54,7 +54,7 @@ async function activateXR() {
     //增加hit-test功能
     const session = await navigator.xr.requestSession("immersive-ar",{requiredFeatures: ['hit-test']});
     session.updateRenderState({
-        baseLayer: new XRWebGLLayer(session,gl)
+        //baseLayer: new XRWebGLLayer(session,gl)
     });
 
     // A 'local' reference space has a native origin that is located
